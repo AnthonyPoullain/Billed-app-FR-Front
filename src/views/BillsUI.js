@@ -19,8 +19,26 @@ const row = (bill) => {
     `;
 };
 
+/**
+ * @function sortBillsByDate
+ *
+ * @description Sorts bills from newest to oldest.
+ *
+ * @param {Array<Object>} bills - Array of bill objects
+ * @returns {Array<Object>} Sorted array of bill objects
+ */
+const sortBillsByDate = (bills) => {
+  return bills
+    .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
+    .reverse();
+};
+
 const rows = (data) => {
-  return data && data.length ? data.map((bill) => row(bill)).join("") : "";
+  return data && data.length
+    ? sortBillsByDate(data)
+        .map((bill) => row(bill))
+        .join("")
+    : "";
 };
 
 export default ({ data: bills, loading, error }) => {
