@@ -17,12 +17,25 @@ export default class NewBill {
     this.billId = null;
     new Logout({ document, localStorage, onNavigate });
   }
+
+  checkFileExtension(extension) {
+    return ["png", "jpg", "jpeg"].includes(extension.toLowerCase());
+  }
+
   handleChangeFile = (e) => {
     e.preventDefault();
     const file = this.document.querySelector(`input[data-testid="file"]`)
       .files[0];
     const filePath = e.target.value.split(/\\/g);
     const fileName = filePath[filePath.length - 1];
+    const fileExtension = fileName.split(".").at(-1);
+
+    const extensionIsCorrect = this.checkFileExtension(fileExtension);
+    if (!extensionIsCorrect) {
+      this.document.querySelector(`input[data-testid="file"]`).value = "";
+      window.alert("Wrong file format. Accepted formats: .jpg, .jpeg, .png");
+    }
+
     const formData = new FormData();
     const email = JSON.parse(localStorage.getItem("user")).email;
     formData.append("file", file);
@@ -37,13 +50,13 @@ export default class NewBill {
         },
       })
       .then(({ fileUrl, key }) => {
-        console.log(fileUrl);
         this.billId = key;
         this.fileUrl = fileUrl;
         this.fileName = fileName;
       })
       .catch((error) => console.error(error));
   };
+
   handleSubmit = (e) => {
     e.preventDefault();
     console.log(
