@@ -18,9 +18,17 @@ export default class NewBill {
     new Logout({ document, localStorage, onNavigate });
   }
 
-  checkFileExtension(extension) {
+  /**
+   * @method checkFileExtension
+   *
+   * @description Checks if the file is an image in the accepted format (jpg, jpeg, png).
+   *
+   * @param {string} extension - File extension (e.g: 'jpg')
+   * @returns {boolean} Returns true if the extension is valid.
+   */
+  checkFileExtension = (extension) => {
     return ["png", "jpg", "jpeg"].includes(extension.toLowerCase());
-  }
+  };
 
   handleChangeFile = (e) => {
     e.preventDefault();
