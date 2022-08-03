@@ -18,30 +18,21 @@ export default class NewBill {
     new Logout({ document, localStorage, onNavigate });
   }
 
-  /**
-   * @method checkFileExtension
-   *
-   * @description Checks if the file is an image in the accepted format (jpg, jpeg, png).
-   *
-   * @param {string} extension - File extension (e.g: 'jpg')
-   * @returns {boolean} Returns true if the extension is valid.
-   */
-  checkFileExtension = (extension) => {
-    return ["png", "jpg", "jpeg"].includes(extension.toLowerCase());
-  };
-
   handleChangeFile = (e) => {
     e.preventDefault();
     const file = this.document.querySelector(`input[data-testid="file"]`)
       .files[0];
-    const filePath = e.target.value.split(/\\/g);
-    const fileName = filePath[filePath.length - 1];
+    const fileName = file.name;
     const fileExtension = fileName.split(".").at(-1);
 
-    const extensionIsCorrect = this.checkFileExtension(fileExtension);
+    const extensionIsCorrect = ["png", "jpg", "jpeg"].includes(
+      fileExtension.toLowerCase()
+    );
+
     if (!extensionIsCorrect) {
-      this.document.querySelector(`input[data-testid="file"]`).value = "";
+      this.document.querySelector(`input[data-testid="file"]`).value = null;
       window.alert("Wrong file format. Accepted formats: .jpg, .jpeg, .png");
+      return;
     }
 
     const formData = new FormData();
@@ -67,10 +58,10 @@ export default class NewBill {
 
   handleSubmit = (e) => {
     e.preventDefault();
-    console.log(
-      'e.target.querySelector(`input[data-testid="datepicker"]`).value',
-      e.target.querySelector(`input[data-testid="datepicker"]`).value
-    );
+    // console.log(
+    //   'e.target.querySelector(`input[data-testid="datepicker"]`).value',
+    //   e.target.querySelector(`input[data-testid="datepicker"]`).value
+    // );
     const email = JSON.parse(localStorage.getItem("user")).email;
     const bill = {
       email,
