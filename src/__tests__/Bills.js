@@ -77,8 +77,16 @@ describe("Given I am connected as an employee", () => {
       eye.addEventListener("click", () => handleClickIconEye(eye));
       userEvent.click(eye);
 
-      // Required - Or add class takes too long to be detected by expect statement below
-      await new Promise((r) => setTimeout(r, 1000));
+      // Timer required -
+      // Or add class takes too long to be detected by expect statement below
+      const classListHasBeenUpdated = document
+        .querySelector("#modaleFile")
+        .classList.contains("show");
+      let i = 0;
+      while (!classListHasBeenUpdated && i < 10) {
+        await new Promise((r) => setTimeout(r, 100));
+        i++;
+      }
 
       expect(handleClickIconEye).toHaveBeenCalled();
       expect(document.querySelector("#modaleFile")).toHaveClass("show");
@@ -148,7 +156,7 @@ describe("Given I am a user connected as Employee", () => {
           };
         });
 
-        window.onNavigate(ROUTES_PATH.Dashboard);
+        window.onNavigate(ROUTES_PATH.Bills);
         await new Promise(process.nextTick);
         const message = await screen.getByText(/Erreur 500/);
         expect(message).toBeTruthy();
