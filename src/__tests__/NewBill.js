@@ -193,7 +193,7 @@ describe("Given I am a user connected as Employee", () => {
       form.addEventListener("submit", handleSubmit);
       fireEvent.submit(form);
       await new Promise(process.nextTick);
-      expect(console.error).toBeCalled();
+      expect(console.error).toHaveBeenCalled();
     });
   });
 });
