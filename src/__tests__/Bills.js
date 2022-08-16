@@ -79,11 +79,11 @@ describe("Given I am connected as an employee", () => {
 
       // Timer required -
       // Or add class takes too long to be detected by expect statement below
-      const classListHasBeenUpdated = document
-        .querySelector("#modaleFile")
-        .classList.contains("show");
       let i = 0;
-      while (!classListHasBeenUpdated && i < 10) {
+      while (
+        !document.querySelector("#modaleFile").classList.contains("show") &&
+        i < 10
+      ) {
         await new Promise((r) => setTimeout(r, 100));
         i++;
       }
